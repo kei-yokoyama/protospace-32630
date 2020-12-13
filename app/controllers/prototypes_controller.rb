@@ -1,7 +1,7 @@
 class PrototypesController < ApplicationController
   before_action :move_to_index, except: [:index, :show]
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :authenticate_user!, except: [:index, :show, :create]
+  before_action :authenticate_user!, except: [:index, :show, :new, :create]
 
   def index
     @prototypes = Prototype.all
@@ -12,12 +12,13 @@ class PrototypesController < ApplicationController
   end
 
   def create
-    if Prototype.create(prototype_params)
+    if Prototype.create(prototype_params).valid?
       redirect_to root_path
     else
-      render :new
+      redirect_to action: :new
     end
   end
+
 
   def show
     @prototype = Prototype.find(params[:id])
@@ -36,10 +37,11 @@ class PrototypesController < ApplicationController
   end
 
   def destroy
-
     Prototype.find(params[:id]).destroy
     redirect_to action: :index
   end
+
+
 
   private
   def prototype_params
@@ -54,10 +56,22 @@ class PrototypesController < ApplicationController
 
   def move_to_index2
     unless user_signed_in? && current_user.id == Prototype.find(params[:id]).user.id
-      redirect_to action: :index
+      redirect_to action: :edit
     end
   end
 
 end
 
 
+
+
+=begin def create
+  @room = Room.find(params[:room_id])
+  @message = @room.messages.new(message_params)
+  if @message.save
+    redirect_to room_messages_path(@room)
+  else
+    @messages = @room.messages.includes(:user)
+    render :index
+  end
+=end 
