@@ -1,7 +1,7 @@
 class PrototypesController < ApplicationController
-  before_action :move_to_index, except: [:index, :show]
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :authenticate_user!, except: [:index, :show, :new, :create]
+  before_action :move_to_index, except: [:index, :show]
+  before_action :move_to_index2, except: [:index, :show, :new, :create]
 
   def index
     @prototypes = Prototype.all
@@ -59,22 +59,8 @@ class PrototypesController < ApplicationController
 
   def move_to_index2
     unless user_signed_in? && current_user.id == Prototype.find(params[:id]).user.id
-      redirect_to action: :edit
+      redirect_to action: :index
     end
   end
 
 end
-
-
-
-
-=begin def create
-  @room = Room.find(params[:room_id])
-  @message = @room.messages.new(message_params)
-  if @message.save
-    redirect_to room_messages_path(@room)
-  else
-    @messages = @room.messages.includes(:user)
-    render :index
-  end
-=end 
