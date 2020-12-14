@@ -2,7 +2,7 @@
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding">
-        <%= "プロトタイプのタイトル"%>
+        <%= "#{@prototype.title}"%>
       </p>
       <%= link_to "by #{@prototype.user.name}", user_path(@prototype.user_id), class: :prototype__user %>
 
